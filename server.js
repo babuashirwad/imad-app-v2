@@ -5,14 +5,25 @@ var path = require('path');
 var app = express();
 app.use(morgan('combined'));
 
-var article_one = {
-    title:'article one|babu',
-    date:'feb 16,2017',
-    heading:'article one',
-    content:` <p>
-                    this is the article one.this is the article one.this is the article one.this is the article one.this is the article one.this is the article one.this is the article one.this is the article one.
-                </p>`
-};
+var articles={
+    'article- one' : {
+        title: 'article one|babu',
+        date:'feb 16,2017',
+        heading:'article one',
+        content:` <p>
+                        this is the article one.this is the article one.this is the article one.this is the article one.this is the article one.this is the article one.this is the article one.this is the article one.
+                    </p>`
+    },
+    'article-two' :{
+         title:'article two|babu',
+        date:'feb 18,2017',
+        heading:'article two',
+        content:` <p>
+                        this is the article two
+                    </p>`
+        
+    }
+};  
 
 function createTemplate (data){
     var title=data.title;
@@ -60,9 +71,11 @@ app.get('/ui/style.css', function (req, res) {
 app.get('/ui/madi.png', function (req, res) {
   res.sendFile(path.join(__dirname, 'ui', 'madi.png'));
 });
-app.get('/article-one',function(req,res){
-   res.send(createTemplate(article_one));
+app.get('/:articlename',function(req,res){
+   var articlename= req.params.articlename;
+   res.send(createTemplate(articles[articlename]));
 });
+
 
 var port = 8080; // Use 8080 for local development because you might already have apache running on 80
 app.listen(8080, function () {
